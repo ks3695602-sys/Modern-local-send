@@ -169,6 +169,38 @@ flutter run -d android
 flutter build apk --release
 ```
 
+### Automated Build & Release via GitHub Actions
+
+This repository includes a fully configured continuous delivery pipeline at [`.github/workflows/build-and-release.yml`](.github/workflows/build-and-release.yml) that automatically builds the Android APKs/AAB and creates a GitHub Release:
+
+1. **Create Repository on GitHub**:
+   Create a new repository named `Modern-local-send` on your GitHub account.
+
+2. **Push Repository & Tags**:
+   ```bash
+   git remote add origin https://github.com/<your-username>/Modern-local-send.git
+   git branch -M master
+   git push -u origin master
+   git push origin v2.0.0
+   ```
+
+3. **Automatic Artifact Packaging**:
+   Pushing any `v*` tag triggers the GitHub Actions workflow which:
+   - Sets up Flutter 3.41+ and Java JDK 17
+   - Runs `flutter analyze`
+   - Builds:
+     - `ModernLocalSend-universal.apk` (All architectures)
+     - `ModernLocalSend-arm64-v8a.apk` (Modern 64-bit phones)
+     - `ModernLocalSend-armeabi-v7a.apk` (Legacy 32-bit devices)
+     - `ModernLocalSend-x86_64.apk` (Emulators / Chromebooks)
+     - `ModernLocalSend.aab` (Google Play App Bundle)
+   - Computes SHA256 cryptographic hashes (`SHA256SUMS.txt`)
+   - Publishes the formal GitHub Release with all assets attached.
+
+4. **Manual Trigger (Workflow Dispatch)**:
+   You can also trigger builds on demand via the **Actions** tab on GitHub:
+   - Go to **Actions** → **Build & Release Modern LocalSend** → **Run workflow**.
+
 ---
 
 ## 📜 License & Acknowledgments
