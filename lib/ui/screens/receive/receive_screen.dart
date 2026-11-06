@@ -170,13 +170,11 @@ class ReceiveScreen extends StatelessWidget {
                       icon: const Icon(CupertinoIcons.trash, color: Colors.white),
                       label: const Text('Delete'),
                       isDestructive: true,
-                      color: const Color(0xFFFF453A),
                       onTap: () => transfer.deleteFromHistory(item.id),
                     ),
                     GlassSwipeAction(
                       icon: const Icon(CupertinoIcons.share, color: Colors.white),
                       label: const Text('Share'),
-                      color: const Color(0xFF007AFF),
                       onTap: () {
                         _showToast(context, 'Sharing ${item.name}');
                       },

@@ -71,7 +71,7 @@ class TransferModalSheet extends StatelessWidget {
               child: Icon(
                 isDone
                     ? CupertinoIcons.checkmark_alt
-                    : (isSending ? CupertinoIcons.paperplane_fill : CupertinoIcons.tray_and_arrow_down_fill),
+                    : (isSending ? CupertinoIcons.paperplane_fill : CupertinoIcons.tray_fill),
                 color: Colors.white,
                 size: 24,
               ),
@@ -260,9 +260,9 @@ class TransferModalSheet extends StatelessWidget {
 
         const SizedBox(height: 24),
 
-        // Action button (GlassButton uses onTap)
+        // Action button (GlassButton.custom uses onTap)
         Center(
-          child: GlassButton(
+          child: GlassButton.custom(
             onTap: () {
               if (isDone || isCancelled) {
                 appState.transferService.closeSession();

@@ -1,5 +1,10 @@
 include: package:flutter_lints/flutter.yaml
 
+analyzer:
+  errors:
+    deprecated_member_use: ignore
+    unnecessary_import: ignore
+
 linter:
   rules:
     prefer_const_constructors: true

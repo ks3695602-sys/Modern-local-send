@@ -82,7 +82,7 @@ class _MainShellState extends State<MainShell> {
             label: 'Send',
           ),
           GlassTab(
-            icon: Icon(CupertinoIcons.tray_and_arrow_down_fill),
+            icon: Icon(CupertinoIcons.tray_fill),
             label: 'Receive',
           ),
           GlassTab(

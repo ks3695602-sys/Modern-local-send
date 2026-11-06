@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
-import '../../../models/device.dart';
 import '../../../models/file_item.dart';
 import '../../../state/app_state.dart';
 import '../transfer/transfer_modal_sheet.dart';
@@ -143,7 +142,6 @@ class SendScreen extends StatelessWidget {
                       color: Colors.white,
                     ),
                     label: Text(device.isFavorite ? 'Unfavorite' : 'Favorite'),
-                    color: const Color(0xFFFF9500),
                     onTap: () => discovery.toggleFavorite(device.id),
                   ),
                 ],

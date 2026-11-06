@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -86,7 +85,7 @@ class _RadarScanViewState extends State<RadarScanView> with SingleTickerProvider
                     ],
                   ),
                   child: const Icon(
-                    CupertinoIcons.radiowaves_left_right,
+                    CupertinoIcons.antenna_radiowaves_left_right,
                     size: 16,
                     color: Colors.white,
                   ),

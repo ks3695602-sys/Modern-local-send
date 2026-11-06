@@ -124,7 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: const Text('Glass Style Preset', style: TextStyle(color: Colors.white)),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 4),
-                child: GlassSegmentedControl<String>(
+                child: GlassSegmentedControl(
                   segments: const ['iOS 27', 'iOS 26', 'Classic'],
                   selectedIndex: settings.glassPreset == GlassDesignPreset.ios27
                       ? 0
@@ -146,7 +146,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: const Text('Specular Sharpness', style: TextStyle(color: Colors.white)),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 4),
-                child: GlassSegmentedControl<String>(
+                child: GlassSegmentedControl(
                   segments: const ['Soft', 'Medium', 'Sharp'],
                   selectedIndex: settings.sharpnessMode == SpecularSharpnessMode.soft
                       ? 0
@@ -199,7 +199,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           surfaceStyle: GlassSurfaceStyle.solid,
           children: [
             const GlassListTile(
-              leading: Icon(CupertinoIcons.cpu, color: Color(0xFF32ADE6)),
+              leading: Icon(CupertinoIcons.device_desktop, color: Color(0xFF32ADE6)),
               title: Text('Graphics Pipeline', style: TextStyle(color: Colors.white)),
               subtitle: Text('Impeller Vulkan (Optimized 16-shape AST)', style: TextStyle(color: Colors.white54, fontSize: 12)),
               trailing: Icon(CupertinoIcons.checkmark_seal_fill, color: Color(0xFF34C759), size: 18),

@@ -79,9 +79,9 @@ class SelectionPlatter extends StatelessWidget {
     required Color color,
     required VoidCallback onTap,
   }) {
-    // GlassButton sits directly on the page platter (Rule 2)
-    // Note: GlassButton uses onTap, not onPressed
-    return GlassButton(
+    // GlassButton.custom sits directly on the page platter (Rule 2)
+    // Note: GlassButton.custom uses onTap, not onPressed
+    return GlassButton.custom(
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
