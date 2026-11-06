@@ -1,0 +1,128 @@
+name: Build & Release Modern LocalSend
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release Version (e.g. v2.0.0)'
+        required: true
+        default: 'v2.0.0'
+      prerelease:
+        description: 'Mark as Pre-release'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  build-android:
+    name: Build Android APKs & Bundle
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.0'
+          channel: 'stable'
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+
+      - name: Print Flutter & Dart Environment
+        run: |
+          flutter --version
+          dart --version
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Analyze Code
+        run: flutter analyze --no-fatal-infos
+
+      - name: Build Android Universal APK
+        run: flutter build apk --release
+
+      - name: Build Android Split-per-ABI APKs
+        run: flutter build apk --release --split-per-abi
+
+      - name: Build Android App Bundle (AAB)
+        run: flutter build appbundle --release
+
+      - name: Prepare Release Artifacts & Checksums
+        id: prepare_artifacts
+        run: |
+          mkdir -p release_assets
+          TAG_NAME="${{ github.ref_name }}"
+          if [ -z "$TAG_NAME" ] || [[ "$TAG_NAME" != v* ]]; then
+            TAG_NAME="${{ github.event.inputs.version }}"
+          fi
+          echo "RELEASE_TAG=$TAG_NAME" >> $GITHUB_ENV
+
+          # Universal APK
+          cp build/app/outputs/flutter-apk/app-release.apk release_assets/ModernLocalSend-${TAG_NAME}-universal.apk
+
+          # Split ABIs
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk release_assets/ModernLocalSend-${TAG_NAME}-arm64-v8a.apk
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk release_assets/ModernLocalSend-${TAG_NAME}-armeabi-v7a.apk
+          cp build/app/outputs/flutter-apk/app-x86_64-release.apk release_assets/ModernLocalSend-${TAG_NAME}-x86_64.apk
+
+          # App Bundle
+          cp build/app/outputs/bundle/release/app-release.aab release_assets/ModernLocalSend-${TAG_NAME}.aab
+
+          # Generate SHA256 Checksums
+          cd release_assets
+          sha256sum * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+          cd ..
+
+      - name: Upload Artifacts to Workflow Run
+        uses: actions/upload-artifact@v4
+        with:
+          name: modern-localsend-binaries
+          path: release_assets/*
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: Modern LocalSend ${{ env.RELEASE_TAG }} (Liquid Glass Edition)
+          prerelease: ${{ github.event.inputs.prerelease || false }}
+          generate_release_notes: true
+          body: |
+            ## 🔮 Modern LocalSend ${{ env.RELEASE_TAG }} — Liquid Glass Edition
+
+            Welcome to the new generation of LocalSend for Android, featuring Apple iOS 26/27 liquid glass shaders, physics-driven jelly animations, and real GPU refraction.
+
+            ### 🚀 What's New
+            - **Liquid Glass Navigation**: Fluid `GlassAppBar` and `GlassTabBar.bottom` with dynamic edge fading and content-aware brightness.
+            - **"Glass as Platter, Not Wrapper"**: Refined native iOS inset-grouped solid sections for device lists and transfer history.
+            - **Android Impeller Vulkan Pipeline**: High-performance 16-shape unrolled shader pipeline with zero-blocking Frame 1 launch.
+            - **LocalSend Protocol v2**: Fully interoperable with all standard LocalSend clients over WiFi/LAN (`224.0.0.167:53317`).
+            - **Fluid Transfer Detents**: Live throughput speed metrics (MB/s) and interactive cancel/done controls via `GlassModalSheet`.
+
+            ### 📦 Download Assets
+            - **Universal APK**: Works on all Android devices.
+            - **arm64-v8a APK**: Optimized for modern Android phones and tablets (Pixel, Galaxy, OnePlus, Xiaomi).
+            - **armeabi-v7a APK**: For legacy 32-bit ARM Android devices.
+            - **x86_64 APK**: For Android emulators and Chromebooks.
+            - **AAB Bundle**: Google Play Store release bundle.
+            - **SHA256SUMS.txt**: Cryptographic checksum verification.
+          files: |
+            release_assets/*
