@@ -1,0 +1,45 @@
+name: modern_localsend
+description: "Modern LocalSend — Cross-platform local network sharing redesigned with Apple iOS 26/27 Liquid Glass physics and shaders."
+publish_to: "none"
+version: 2.0.0+1
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+  flutter: ">=3.41.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Apple iOS 26/27 Liquid Glass Physics & Fragment Shaders
+  liquid_glass_widgets: ^1.16.1
+
+  # Core Icons (Strictly required for Glass Widgets glyphs)
+  cupertino_icons: ^1.0.8
+
+  # Networking & Device Discovery
+  connectivity_plus: ^6.1.3
+  network_info_plus: ^6.1.4
+
+  # File Picking & Storage
+  file_picker: ^8.1.7
+  path_provider: ^2.1.5
+  open_filex: ^4.7.0
+  share_plus: ^10.1.4
+
+  # State & Persistence
+  shared_preferences: ^2.3.5
+  permission_handler: ^11.3.1
+  uuid: ^4.5.1
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
