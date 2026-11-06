@@ -125,7 +125,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 4),
                 child: GlassSegmentedControl(
-                  segments: const ['iOS 27', 'iOS 26', 'Classic'],
+                  segments: const [
+                    GlassSegment(label: 'iOS 27'),
+                    GlassSegment(label: 'iOS 26'),
+                    GlassSegment(label: 'Classic'),
+                  ],
                   selectedIndex: settings.glassPreset == GlassDesignPreset.ios27
                       ? 0
                       : (settings.glassPreset == GlassDesignPreset.ios26 ? 1 : 2),
@@ -147,7 +151,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 4),
                 child: GlassSegmentedControl(
-                  segments: const ['Soft', 'Medium', 'Sharp'],
+                  segments: const [
+                    GlassSegment(label: 'Soft'),
+                    GlassSegment(label: 'Medium'),
+                    GlassSegment(label: 'Sharp'),
+                  ],
                   selectedIndex: settings.sharpnessMode == SpecularSharpnessMode.soft
                       ? 0
                       : (settings.sharpnessMode == SpecularSharpnessMode.medium ? 1 : 2),
