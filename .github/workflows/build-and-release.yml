@@ -73,15 +73,28 @@ jobs:
           echo "RELEASE_TAG=$TAG_NAME" >> $GITHUB_ENV
 
           # Universal APK
-          cp build/app/outputs/flutter-apk/app-release.apk release_assets/ModernLocalSend-${TAG_NAME}-universal.apk
+          if [ -f build/app/outputs/flutter-apk/app-release.apk ]; then
+            cp build/app/outputs/flutter-apk/app-release.apk release_assets/ModernLocalSend-${TAG_NAME}-universal.apk
+          fi
 
           # Split ABIs
-          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk release_assets/ModernLocalSend-${TAG_NAME}-arm64-v8a.apk
-          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk release_assets/ModernLocalSend-${TAG_NAME}-armeabi-v7a.apk
-          cp build/app/outputs/flutter-apk/app-x86_64-release.apk release_assets/ModernLocalSend-${TAG_NAME}-x86_64.apk
+          if [ -f build/app/outputs/flutter-apk/app-arm64-v8a-release.apk ]; then
+            cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk release_assets/ModernLocalSend-${TAG_NAME}-arm64-v8a.apk
+          fi
+          if [ -f build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ]; then
+            cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk release_assets/ModernLocalSend-${TAG_NAME}-armeabi-v7a.apk
+          fi
+          if [ -f build/app/outputs/flutter-apk/app-x86_64-release.apk ]; then
+            cp build/app/outputs/flutter-apk/app-x86_64-release.apk release_assets/ModernLocalSend-${TAG_NAME}-x86_64.apk
+          fi
 
           # App Bundle
-          cp build/app/outputs/bundle/release/app-release.aab release_assets/ModernLocalSend-${TAG_NAME}.aab
+          if [ -f build/app/outputs/bundle/release/app-release.aab ]; then
+            cp build/app/outputs/bundle/release/app-release.aab release_assets/ModernLocalSend-${TAG_NAME}.aab
+          fi
+
+          # Fallback copy in case of any variant naming differences
+          find build/app/outputs/ -type f \( -name "*.apk" -o -name "*.aab" \) -exec cp -n {} release_assets/ \; || true
 
           # Generate SHA256 Checksums
           cd release_assets
