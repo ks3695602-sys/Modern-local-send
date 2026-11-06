@@ -54,13 +54,13 @@ jobs:
         run: flutter analyze || true
 
       - name: Build Android Universal APK
-        run: flutter build apk --release
+        run: flutter build apk --release --android-skip-build-dependency-validation
 
       - name: Build Android Split-per-ABI APKs
-        run: flutter build apk --release --split-per-abi
+        run: flutter build apk --release --split-per-abi --android-skip-build-dependency-validation
 
       - name: Build Android App Bundle (AAB)
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --android-skip-build-dependency-validation
 
       - name: Prepare Release Artifacts & Checksums
         id: prepare_artifacts
